@@ -1,0 +1,58 @@
+logging:
+  level:
+    com.fady.crawler: 'info'
+    org.springframework: 'info'
+    org.apache.http: 'info'
+  file:
+    name: 'logs/${spring.application.name}.log'
+
+configuration:
+  crawler:
+    default-depth: 3
+    max-depth-allowed: 250
+    time-out: 5000
+    follow-redirects: false
+
+
+spring:
+  application:
+    name: 'crawler-api'
+  jackson:
+    default-property-inclusion: 'always'
+    serialization:
+      write_dates_as_timestamps: false
+      indent_output: false
+  cache:
+    cache-names:
+      - ${spring.application.name}
+    caffeine.spec: 'maximumSize=5000,expireAfterWrite=86400s'
+
+server:
+  servlet:
+    context-path: /${spring.application.name}
+  port: 8080
+---
+
+logging:
+  pattern:
+    file: '[%d{ISO8601}] [%thread] [%level] [%logger] [serviceName:${spring.application.name}] => %msg%n'
+  level:
+    au.com.rakesh: 'debug'
+spring:
+  config:
+    activate:
+      on-profile: test
+---
+
+spring:
+  jackson:
+    serialization.indent_output: true
+  config:
+    activate:
+      on-profile: local
+logging:
+  level:
+    au.com.rakesh: 'debug'
+  pattern:
+    console: '[%d{ISO8601}] [%thread] [%level] [%logger] [serviceName:${spring.application.name}] => %msg%n'
+---

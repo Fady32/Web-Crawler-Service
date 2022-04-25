@@ -1,0 +1,16 @@
+version: '3'
+services:
+  crawler-server:
+    container_name: web_crawler_service
+    build:
+      context: ''
+      dockerfile: execute.dockerfile
+    image: crawler-service:latest
+    ports:
+      - 8080:8080
+    networks:
+      - spring-cloud-network
+
+networks:
+  spring-cloud-network:
+    driver: bridge
